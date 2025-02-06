@@ -1,61 +1,143 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '@/app/css/mahasiswa/main-page.css';
+import DataTable from 'react-data-table-component';
 
 export default function MainPage() {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+
+    const columns = [
+        {
+          name: 'No.',
+          selector: row => row.no,
+          sortable: true,
+          cell: row => (
+            <div className="text-center p-2 w-4">{row.no}</div>
+          ),
+        },
+        {
+          name: 'Aktivitas',
+          selector: row => row.aktivitas,
+          sortable: true,
+          cell: row => (
+            <div className="text-left p-2">{row.aktivitas}</div>
+          ),
+        },
+        {
+          name: 'Tanggal Pengajuan',
+          selector: row => row.tanggal,
+          sortable: true,
+          cell: row => (
+            <div className="text-center p-2">{row.tanggal}</div>
+          ),
+        },
+        {
+          name: 'Status',
+          selector: row => row.status,
+          sortable: true,
+          cell: row => (
+            <div className="text-center p-2">
+              <button
+                className={`${
+                  row.status === 'Diterima' ? 'bg-green-500' : 'bg-red-500'
+                } text-white py-2 px-4 rounded-lg`}>
+                {row.status}{' '}
+                <i className={`fas ${row.status === 'Diterima' ? 'fa-check' : 'fa-times'} ml-2`}></i>
+              </button>
+            </div>
+          ),
+        },
+      ];
+      
+    const dummyData = [
+        { no: 1, aktivitas: 'Pengajuan Bimbingan Kerja Praktek', tanggal: '24 Jan 2025', status: 'Diterima' },
+        { no: 2, aktivitas: 'Pengajuan Skripsi', tanggal: '25 Jan 2025', status: 'Ditolak' },
+    ];
+    
+    const customStyles = {
+        headCells: {
+            style: {
+            backgroundColor: '#1e40af', // Blue color for header
+            color: 'white',
+            textAlign: 'center',
+            padding: '1rem',
+            border: '1px solid rgb(222, 226, 230)',
+            },
+        },
+        cells: {
+            style: {
+            padding: '0.5rem',
+            textAlign: 'center',
+            border: '1px solid rgb(222, 226, 230)',
+            },
+        },
+    };
+
     return (
         <div className="flex">
-            <aside id="sidebar" className="w-16 sm:w-64 transition-all ease-in-out duration-300 bg-[#114D91] flex flex-col h-screen">
-                <div className="flex items-center p-4">
-                    <button className="bg-transparent cursor-pointer border-0 p-4">
-                        <i className="lni lni-list text-white text-2xl"></i>
+            <aside 
+                id="sidebar" 
+                className={`transition-all ease-in-out duration-300 bg-[#114D91] flex flex-col h-screen ${isExpanded ? 'expanded' : ''}`}
+                onMouseEnter={(e) => setIsExpanded(true)}
+                onMouseLeave={(e) => setIsExpanded(false)}
+            >
+                <div className="flex items-center justify-center">
+                    <button 
+                        className="bg-transparent cursor-pointer border-0 p-4 text-white"
+                    >
+                        <i className="fas fa-bars text-2xl"></i>
                     </button>
-                    <div className="sidebar-logo ml-auto text-white font-semibold text-xl hidden sm:block">
-                        <a href="https://kp-sti.inihikam.my.id/mahasiswa">Kerja Praktek</a>
-                    </div>
+                    {isExpanded && (
+                        <div className="sidebar-logo ml-auto text-white font-semibold text-xl">
+                            <a href="https://kp-sti.inihikam.my.id/mahasiswa">Kerja Praktek</a>
+                        </div>
+                    )}
                 </div>
-                <ul className="sidebar-nav flex-1 p-4">
-                    <li className="sidebar-item mb-2">
+                <ul className="sidebar-nav flex-1">
+                    <li className="sidebar-item">
                         <a href="https://kp-sti.inihikam.my.id/mahasiswa" className="sidebar-link flex items-center p-2 text-white hover:bg-opacity-10 hover:border-white">
                             <i className="lni lni-home text-xl mr-3"></i>
-                            <span className="hidden sm:inline">Dashboard</span>
+                            {isExpanded && <span>Dashboard</span>}
                         </a>
                     </li>
-                    <li className="sidebar-item mb-2">
+                    <li className="sidebar-item">
                         <a href="https://kp-sti.inihikam.my.id/pengajuan" className="sidebar-link flex items-center p-2 text-white hover:bg-opacity-10 hover:border-white">
                             <i className="lni lni-pencil-alt text-xl mr-3"></i>
-                            <span className="hidden sm:inline">Pengajuan Kerja Praktek</span>
+                            {isExpanded && <span>Pengajuan Kerja Praktek</span>}
                         </a>
                     </li>
-                    <li className="sidebar-item mb-2">
+                    <li className="sidebar-item">
                         <a href="https://kp-sti.inihikam.my.id/logbook" className="sidebar-link flex items-center p-2 text-white hover:bg-opacity-10 hover:border-white">
                             <i className="lni lni-notepad text-xl mr-3"></i>
-                            <span className="hidden sm:inline">Logbook Bimbingan KP</span>
+                            {isExpanded && <span>Logbook Bimbingan KP</span>}
                         </a>
                     </li>
-                    <li className="sidebar-item mb-2">
+                    <li className="sidebar-item">
                         <a href="https://kp-sti.inihikam.my.id/form-sidang" className="sidebar-link flex items-center p-2 text-white hover:bg-opacity-10 hover:border-white">
                             <i className="fas fa-certificate text-xl mr-3"></i>
-                            <span className="hidden sm:inline">Pengajuan Sidang</span>
+                            {isExpanded && <span>Pengajuan Sidang</span>}
                         </a>
                     </li>
                 </ul>
                 <div className="sidebar-footer">
                     <a href="https://kp-sti.inihikam.my.id/profilmhs" className="sidebar-link flex items-center p-2 text-white hover:bg-opacity-10 hover:border-white">
                         <i className="fas fa-user text-xl mr-3"></i>
-                        <span className="hidden sm:inline">Profil Mahasiswa</span>
+                        {isExpanded && <span>Profil Mahasiswa</span>}
                     </a>
                 </div>
                 <div className="sidebar-footer">
                     <a href="https://kp-sti.inihikam.my.id/tentang" className="sidebar-link flex items-center p-2 text-white hover:bg-opacity-10 hover:border-white">
                         <i className="lni lni-code-alt text-xl mr-3"></i>
-                        <span className="hidden sm:inline">Tentang</span>
+                        {isExpanded && <span>Tentang</span>}
                     </a>
                 </div>
                 <div className="sidebar-footer">
                     <a href="https://kp-sti.inihikam.my.id/logout" className="sidebar-link flex items-center p-2 text-white hover:bg-opacity-10 hover:border-white">
                         <i className="lni lni-exit text-xl mr-3"></i>
-                        <span className="hidden sm:inline">Logout</span>
+                        {isExpanded && <span>Logout</span>}
                     </a>
                 </div>
             </aside>
@@ -74,7 +156,9 @@ export default function MainPage() {
                         <div className="card-body p-4" id="markdown-content-2">
                             Pendaftaran Kerja Praktek telah dibuka! Silahkan melakukan pengajuan KP pada website ini.
                         </div>
-                        <small className="text-sm text-gray-500 mt-2 ml-4">Published by: Koordinator KP on 20 Jan 2025, 22:34</small>
+                        <div className="text-sm text-gray-500 mt-2 ml-4 mb-2">
+                            Published by: Koordinator KP on 20 Jan 2025, 22:34
+                        </div>
                     </div>
                     <hr className="my-4" />
                     <div className="bg-yellow-200 p-4 rounded-md">
@@ -84,35 +168,19 @@ export default function MainPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="col-span-1">
-                            <h1 className="text-xl font-semibold"><i className="far fa-calendar-check mr-2"></i> Aktivitas Terbaru</h1>
+                            <h1 className="text-xl font-semibold mb-4"><i className="far fa-calendar-check mr-2"></i> Aktivitas Terbaru</h1>
                             <div className="overflow-x-auto">
-                                <table className="min-w-full table-auto border-collapse">
-                                    <thead className="bg-blue-600 text-white">
-                                        <tr>
-                                            <th className="text-center p-2">No.</th>
-                                            <th className="text-center p-2">Aktivitas</th>
-                                            <th className="text-center p-2">Tanggal Pengajuan</th>
-                                            <th className="text-center p-2">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td className="text-center p-2">1</td>
-                                            <td className="p-2">Pengajuan Bimbingan Kerja Praktek</td>
-                                            <td className="text-center p-2">24 Jan 2025</td>
-                                            <td className="text-center p-2">
-                                                <button className="bg-green-500 text-white py-2 px-4 rounded-lg">Diterima
-                                                    <i className="fas fa-check ml-2"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <DataTable
+                                    columns={columns}
+                                    data={dummyData}
+                                    pagination
+                                    customStyles={customStyles}
+                                />
                             </div>
                         </div>
-                        <div className="col-span-1 py-5 bg-[#f0f5ff] rounded-lg">
-                            <h1 className="text-xl font-semibold"><i className="fas fa-bell mr-2"></i> Notifikasi</h1>
-                            <p>Dosen Pembimbing telah menerima topikmu! Silahkan ke halaman Logbook untuk mengisi catatan bimbingan.</p>
+                        <div className="col-span-1 bg-[#f0f5ff] rounded-lg">
+                            <h1 className="text-xl font-semibold mb-4"><i className="fas fa-bell mr-2"></i> Notifikasi</h1>
+                            <p className='mb-4'>Dosen Pembimbing telah menerima topikmu! Silahkan ke halaman Logbook untuk mengisi catatan bimbingan.</p>
                             <a href="https://kp-sti.inihikam.my.id/logbook" className="bg-blue-600 text-white py-2 px-4 rounded-lg flex items-center">
                                 <i className="fas fa-chevron-right mr-2"></i> Menuju ke Halaman
                             </a>
@@ -122,4 +190,4 @@ export default function MainPage() {
             </div>
         </div>
     );
-};
+}

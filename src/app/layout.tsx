@@ -29,12 +29,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           rel="stylesheet"
           href="https://cdn.lineicons.com/3.0/lineicons.css"
         />
-        {showLoginCss && (
-          <link
-            rel="stylesheet"
-            href="/styles/login.css"
-          />
-        )}
       </head>
       <body>
         <Layout>

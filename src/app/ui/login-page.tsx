@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import '@/app/css/login-page.css';
 
 export default function LoginPage() {
   return (
