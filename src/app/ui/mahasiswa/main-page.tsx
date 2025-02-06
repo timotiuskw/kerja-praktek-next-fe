@@ -1,14 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
+import dynamic from 'next/dynamic';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+// import DataTable from 'react-data-table-component';
 import '@/app/css/mahasiswa/main-page.css';
-import DataTable from 'react-data-table-component';
+import Sidebar from '@/app/ui/mahasiswa/sidebar';
+
+const DataTable = dynamic(() => import("react-data-table-component"), {ssr: false});
 
 export default function MainPage() {
-    const [isExpanded, setIsExpanded] = useState(false);
-
-
     const columns = [
         {
           name: 'No.',
@@ -45,7 +46,6 @@ export default function MainPage() {
                   row.status === 'Diterima' ? 'bg-green-500' : 'bg-red-500'
                 } text-white py-2 px-4 rounded-lg`}>
                 {row.status}{' '}
-                <i className={`fas ${row.status === 'Diterima' ? 'fa-check' : 'fa-times'} ml-2`}></i>
               </button>
             </div>
           ),
@@ -53,8 +53,8 @@ export default function MainPage() {
       ];
       
     const dummyData = [
-        { no: 1, aktivitas: 'Pengajuan Bimbingan Kerja Praktek', tanggal: '24 Jan 2025', status: 'Diterima' },
-        { no: 2, aktivitas: 'Pengajuan Skripsi', tanggal: '25 Jan 2025', status: 'Ditolak' },
+        { no: 1, aktivitas: 'Pengajuan Bimbingan Kerja Praktek', tanggal: '24 Jan 2025', status: 'Ditolak' },
+        { no: 2, aktivitas: 'Pengajuan Skripsi', tanggal: '25 Jan 2025', status: 'Diterima' },
     ];
     
     const customStyles = {
@@ -78,69 +78,7 @@ export default function MainPage() {
 
     return (
         <div className="flex">
-            <aside 
-                id="sidebar" 
-                className={`transition-all ease-in-out duration-300 bg-[#114D91] flex flex-col h-screen ${isExpanded ? 'expanded' : ''}`}
-                onMouseEnter={(e) => setIsExpanded(true)}
-                onMouseLeave={(e) => setIsExpanded(false)}
-            >
-                <div className="flex items-center justify-center">
-                    <button 
-                        className="bg-transparent cursor-pointer border-0 p-4 text-white"
-                    >
-                        <i className="fas fa-bars text-2xl"></i>
-                    </button>
-                    {isExpanded && (
-                        <div className="sidebar-logo ml-auto text-white font-semibold text-xl">
-                            <a href="https://kp-sti.inihikam.my.id/mahasiswa">Kerja Praktek</a>
-                        </div>
-                    )}
-                </div>
-                <ul className="sidebar-nav flex-1">
-                    <li className="sidebar-item">
-                        <a href="https://kp-sti.inihikam.my.id/mahasiswa" className="sidebar-link flex items-center p-2 text-white hover:bg-opacity-10 hover:border-white">
-                            <i className="lni lni-home text-xl mr-3"></i>
-                            {isExpanded && <span>Dashboard</span>}
-                        </a>
-                    </li>
-                    <li className="sidebar-item">
-                        <a href="https://kp-sti.inihikam.my.id/pengajuan" className="sidebar-link flex items-center p-2 text-white hover:bg-opacity-10 hover:border-white">
-                            <i className="lni lni-pencil-alt text-xl mr-3"></i>
-                            {isExpanded && <span>Pengajuan Kerja Praktek</span>}
-                        </a>
-                    </li>
-                    <li className="sidebar-item">
-                        <a href="https://kp-sti.inihikam.my.id/logbook" className="sidebar-link flex items-center p-2 text-white hover:bg-opacity-10 hover:border-white">
-                            <i className="lni lni-notepad text-xl mr-3"></i>
-                            {isExpanded && <span>Logbook Bimbingan KP</span>}
-                        </a>
-                    </li>
-                    <li className="sidebar-item">
-                        <a href="https://kp-sti.inihikam.my.id/form-sidang" className="sidebar-link flex items-center p-2 text-white hover:bg-opacity-10 hover:border-white">
-                            <i className="fas fa-certificate text-xl mr-3"></i>
-                            {isExpanded && <span>Pengajuan Sidang</span>}
-                        </a>
-                    </li>
-                </ul>
-                <div className="sidebar-footer">
-                    <a href="https://kp-sti.inihikam.my.id/profilmhs" className="sidebar-link flex items-center p-2 text-white hover:bg-opacity-10 hover:border-white">
-                        <i className="fas fa-user text-xl mr-3"></i>
-                        {isExpanded && <span>Profil Mahasiswa</span>}
-                    </a>
-                </div>
-                <div className="sidebar-footer">
-                    <a href="https://kp-sti.inihikam.my.id/tentang" className="sidebar-link flex items-center p-2 text-white hover:bg-opacity-10 hover:border-white">
-                        <i className="lni lni-code-alt text-xl mr-3"></i>
-                        {isExpanded && <span>Tentang</span>}
-                    </a>
-                </div>
-                <div className="sidebar-footer">
-                    <a href="https://kp-sti.inihikam.my.id/logout" className="sidebar-link flex items-center p-2 text-white hover:bg-opacity-10 hover:border-white">
-                        <i className="lni lni-exit text-xl mr-3"></i>
-                        {isExpanded && <span>Logout</span>}
-                    </a>
-                </div>
-            </aside>
+            <Sidebar></Sidebar>
             <div className="main flex-1 p-6 bg-[#fafbfe]">
                 <div className="container-dashboard bg-gradient-to-br from-[#9eb9ff] to-[#c7edff] rounded-lg p-6 mb-6 text-center font-semibold text-lg">
                     <h1>Welcome,</h1>

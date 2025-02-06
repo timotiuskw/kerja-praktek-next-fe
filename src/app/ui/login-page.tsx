@@ -21,7 +21,7 @@ export default function LoginPage() {
           </div>
           <div className="flex flex-col space-y-4 w-full">
             <a
-                href="https://kp-sti.inihikam.my.id/login/google"
+                href="#"
                 className="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200 w-full text-center"
             >
                 <i className="lni lni-google"></i>&nbsp; Login dengan Google
