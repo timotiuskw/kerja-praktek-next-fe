@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import '@/app/css/mahasiswa/main-page.css'
 import '@/app/css/mahasiswa/pengajuan/dosen-pembimbing.css';
 import Sidebar from '@/app/ui/mahasiswa/sidebar';
 
